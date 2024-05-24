@@ -1,0 +1,127 @@
+a{
+    text-decoration: none;
+    font-size: 15px;
+    color: #f5f6f7;
+}
+ul li a{
+    color: #7c90ff;
+    list-style: none;
+}
+textarea {
+    resize: none;
+    border-color: #7c90ff ;
+    border-width: 4px;
+    border-radius: 5px;
+}
+body{
+    background-color: #f5f6f7;
+    margin: 0 auto;
+}
+p{
+    color: #b5b5b5;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+}
+.head{
+    font-size: x-small;
+    width: 1500px;
+    height: 50px;
+    border-radius: 5px;
+    text-align: center; /* 文本居中 */
+    background-color: #7c90ff;
+    margin: 10px auto; /* 去除边距 */
+    padding: 0; /* 去除内边距 */
+}
+.head h1{
+    text-align: center;
+    line-height: 45px;
+    color: white;
+}
+.container{
+    margin: 0 auto;
+    width: 1500px;
+    height: 1300px;
+}
+.left{
+    float: left;
+    width: 300px;
+    height: 1232px;
+    border-radius: 5px;
+    background-color: white;
+    margin: 5px; /* 去除边距 */
+    padding: 0; /* 去除内边距 */
+}
+.left input{
+    margin: 0 15px;
+}
+.left select{
+    width: 250px;
+    margin: 10px 15px;
+}
+#do_work h3{
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    height: 20px;
+    font-size: 15px;
+    text-align: center;
+
+}
+#Exeucutions{
+    display: block;
+    width: 100%;
+    height: 200px;
+    
+}
+#Exeucutions button{
+    display: block;
+    margin-top: 20px;
+    margin-left: 80px;
+    background-color: #7c90ff;
+    color: #f5f6f7;
+    width: 100px;
+    height: 30px;
+    border: 0;
+    border-radius: 10px;
+}
+.middle select{
+    width: 250px;
+    margin: 10px 15px;
+}
+.middle{
+    float: left;
+    width: 500px;
+    height: 1232px;
+    border-radius: 5px;
+    background-color: white;
+    margin: 5px; /* 去除边距 */
+}
+.right{
+    float: left;
+    width: 670px; /* 调整右侧块宽度 */
+    height: 1000px;
+    border-radius: 5px;
+    margin: 5px; /* 去除边距 */
+}
+.right p{
+    line-height: 40px;
+}
+.right-first{
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 5px;
+    height: 40%;
+}
+.right-first p{
+    margin: 0 auto;
+}
+.right-second, .right-third{
+    background-color: white;
+    border-radius: 5px;
+    height: 40%;
+    margin: 5px; /* 去除边距 */
+}
+.block_title{
+    height: 40px;
+}

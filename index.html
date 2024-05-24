@@ -1,0 +1,468 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"  href="./brain_web.css">
+        <title>Document</title>
+        <style>
+          /* CSS for modal */
+          .modal {
+              display: none; /* Hidden by default */
+              position: fixed; /* Stay in place */
+              z-index: 1; /* Sit on top */
+              left: 0;
+              top: 0;
+              width: 100%; /* Full width */
+              height: 100%; /* Full height */
+              overflow: auto; /* Enable scroll if needed */
+              background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+          }
+
+          .modal-content {
+              background-color: #fefefe;
+              margin: 15% auto; /* 15% from the top and centered */
+              padding: 20px;
+              border: 1px solid #888;
+              width: 80%; /* Could be more or less, depending on screen size */
+          }
+          .modal a{
+            color: #7c90ff;
+            
+          }
+          .close {
+              color: #aaa;
+              float: right;
+              font-size: 28px;
+              font-weight: bold;
+          }
+
+          .close:hover,
+          .close:focus {
+              color: black;
+              text-decoration: none;
+              cursor: pointer;
+          }
+
+          a{
+              text-decoration: none;
+              font-size: 15px;
+              color: #f5f6f7;
+          }
+          h3{
+            margin: 10 auto;
+          }
+          ul li a{
+              color: #7c90ff;
+              list-style: none;
+          }
+          textarea {
+              resize: none;
+              border-color: #7c90ff ;
+              border-width: 4px;
+              border-radius: 5px;
+          }
+          body{
+              background-color: #f5f6f7;
+              margin: 0 auto;
+          }
+          p{
+              color: #b5b5b5;
+              height: 20px;
+              line-height: 20px;
+              text-align: center;
+          }
+          .head{
+              font-size: x-small;
+              width: 1500px;
+              height: 50px;
+              border-radius: 5px;
+              text-align: center; /* 文本居中 */
+              background-color: #7c90ff;
+              margin: 10px auto; /* 去除边距 */
+              padding: 0; /* 去除内边距 */
+          }
+          .head h1{
+              text-align: center;
+              line-height: 45px;
+              color: white;
+          }
+          .container{
+              margin: 0 auto;
+              width: 1500px;
+              height: 1300px;
+          }
+          .left{
+              float: left;
+              width: 300px;
+              height: 1232px;
+              border-radius: 5px;
+              background-color: white;
+              margin: 5px; /* 去除边距 */
+              padding: 0; /* 去除内边距 */
+          }
+          .left input{
+              margin: 0 15px;
+          }
+          .left select{
+              width: 250px;
+              margin: 10px 15px;
+          }
+          #do_work h3{
+              display: block;
+              margin: 10px auto;
+              width: 100%;
+              height: 20px;
+              font-size: 15px;
+              text-align: center;
+
+          }
+          #Exeucutions{
+              display: block;
+              width: 100%;
+              height: 200px;
+              
+          }
+          #Exeucutions button{
+              display: block;
+              margin-top: 20px;
+              margin-left: 80px;
+              background-color: #7c90ff;
+              color: #f5f6f7;
+              width: 100px;
+              height: 30px;
+              border: 0;
+              border-radius: 10px;
+          }
+          .middle select{
+              width: 250px;
+              margin: 10px 15px;
+          }
+          #showModelList{
+            display: block;
+            background-color: #7c90ff;
+            color: #f5f6f7;
+            width: 250px;
+            height: 30px;
+            border: 0;
+            margin: 0 auto;
+            border-radius: 10px;
+          }
+          .middle{
+              float: left;
+              width: 500px;
+              height: 1232px;
+              border-radius: 5px;
+              background-color: white;
+              margin: 5px; /* 去除边距 */
+          }
+          .right{
+              float: left;
+              width: 670px; /* 调整右侧块宽度 */
+              height: 1000px;
+              border-radius: 5px;
+              margin: 5px; /* 去除边距 */
+          }
+          .right p{
+              line-height: 40px;
+          }
+          .right-first{
+              margin: 0 auto;
+              background-color: white;
+              border-radius: 5px;
+              height: 40%;
+          }
+          .right-first p{
+              margin: 0 auto;
+          }
+          .right-second, .right-third{
+              background-color: white;
+              border-radius: 5px;
+              height: 40%;
+              margin: 5px; /* 去除边距 */
+          }
+          .block_title{
+              height: 40px;
+          }
+        </style>
+    </head>
+    <body style="background-color: #f5f6f7;margin: 0 auto;">
+      <div class="head">
+            <h1>General Intelligent Analysis Platform for Brain Neuroimaging Experimental Paradigm</h1>
+      </div>
+      <div class="container">
+        <div class="left">
+          <div class="block_title">
+            <p align="center">数据</p>
+          </div>
+          <div id="upload">
+            <div>
+              <input type="file" id="folder-input" directory webkitdirectory mozdirectory /> 
+            </div>
+            <div>
+              <select id="file-list" size="50"></select>
+            </div>
+            <div id="do_work">
+              <h3 id="ChoiceExecute">请选择你需要执行的深度学习任务：</h3>
+              <div id="Exeucutions">
+                <button id="executeClassify" style="display: block;">分类工作</button>
+                <button id="executeSegentation" style="display: block;">分割工作</button>
+              </div>
+            </div>
+        </div>
+        </div>
+        <div class="middle">
+          <div class="block_title">
+              <p align="center">深度学习模型训练</p>
+          </div>
+          <div id="nni">
+            <h3 style="font-size: 15px;display: block;text-align: center;margin: 10px auto;">NNI链接</h3>
+            <div style="background-color: #7c90ff; margin: 20px auto;width: 95%;height: 40px;border-radius: 10px;">
+              <a href="http://10.160.196.23:30186/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/8080/oview" style="display: block; text-align: center;margin: 10px auto;line-height: 40px;">跳转至NNI</a>
+            </div>
+          </div>
+          <div id="guochen">
+            <div>
+              <h3 style="display: block;margin: 10px auto;width: 100%;height: 20px;font-size: 15px;text-align: center;">运行过程</h3>
+              <textarea name="textarea1"  cols="60" rows="10" id="textarea1" style="margin: 0 auto; width: 90%;display: block;height: 150px;"></textarea>
+            </div>
+          </div>
+          <div id="params" style="width: 500px; height: 180px;">
+            <div style="margin-top: 20px;">
+              <h3 style="display: block;margin: 10px auto;width: 100%;height: 20px;font-size: 15px;text-align: center;">超参数</h3>
+              <textarea name="textarea2"  cols="60" rows="10" id="textarea2" style="margin: 0 auto; width: 90%;display: block;height: 120px;"></textarea>
+            </div>
+          </div>
+          <div id="model_params" style="display: block; width: 500px; height: 260px;margin: 10px auto;">
+            <div style="margin-top: 20px;">
+              <h3 style="display: block;margin: 10px auto;width: 100%;height: 20px;font-size: 15px;text-align: center;">模型参数</h3>
+              <textarea name="textarea3"  cols="60" rows="10" id="textarea3" style="margin: 0 auto; width: 90%;display: block;height: 120px;"></textarea>
+            </div>
+            <div id="download_model">
+              <h3 style="display: block;margin: 10px auto;width: 100%;height: 20px;font-size: 15px;text-align: center;">模型下载</h3>
+              <div style="margin: 10px 10px;">
+                <button id="showModelList">显示模型列表</button>
+                <ul id="model_list" style="display: none; color: #7c90ff;list-style: none;"></ul>
+              </div>
+              <!-- Add a modal -->
+              <div id="modelModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <table id="modelTable" style="border-collapse: collapse; margin: 10px;"></table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="result" style="display: block; width: 500px; height: 300px;">
+            <div id="images" style="margin: 0 auto;width: 100%; height: 100%; border-width: 4px;border-radius: 5px;">
+              <!-- Image placeholders -->
+              <h3 style="display: block;margin: 0 auto;width: 100%;height: 20px;font-size: 15px;text-align: center;">输出结果</h3>
+              <img id="image1" src="" alt="" style="display: none; width: 220px;height: 200px;border-radius: 10px;margin: 10px;">
+              <img id="image2" src="" alt="" style="display: none; width: 220px;height: 200px;border-radius: 10px;margin: 10px;">
+            </div>
+          </div>
+        </div>
+        <div class="right">
+                <div class="right-first">
+                    <div class="block_title">
+                        <p align="center">脑影像</p>
+                    </div>
+                </div>
+                <div class="right-second">
+                    <div class="block_title">
+                        <p align="center">脑功能区</p>
+                    </div>
+                </div>
+                <div class="right-third">
+                    <div class="block_title">
+                        <p align="center">脑纤维</p>
+                    </div>
+                </div>
+        </div>
+        </div>
+    </body>
+    
+    <script>
+      //用于执行命令行代码的js程序
+      document.getElementById('executeClassify').addEventListener('click', function() {
+        const command = 'nnictl create --config ~/notebook/test_code/classify/fenglei.yml'; // 可以修改command执行不同的代码
+        fetch('/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/3000/runcmd', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ command: command })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('网络似乎还没有准备好...');
+          }
+          return response.text();
+        })
+        .then(data => {
+          console.log(data);
+          alert('脚本成功运行！');
+        })
+        .catch(error => {
+          console.error('There was a problem with your fetch operation:', error);
+          alert('Error executing command. Please check server logs.或者已有实验在运行！');
+          // Call the log_message functions
+          log_message('textarea1', 'log');
+          log_message('textarea2', 'params');
+          log_message('textarea3', 'result');
+          // Call the log_img function
+          load_img();
+
+        });
+      });
+      document.getElementById('executeSegentation').addEventListener('click', function() {
+        const command = 'nnictl create --config ~/notebook/test_code/segentation/segentation.yml'; // 可以修改command执行不同的代码
+        fetch('/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/3000/runcmd', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ command: command })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('网络似乎还没有准备好...');
+          }
+          return response.text();
+        })
+        .then(data => {
+          console.log(data);
+          alert('脚本成功运行！');
+        })
+        .catch(error => {
+          console.error('There was a problem with your fetch operation:', error);
+          alert('Error executing command. Please check server logs.或者已有实验在运行！');
+          // Call the log_message functions
+          log_message('textarea1', 'log');
+          log_message('textarea2', 'params');
+          // log_message('textarea3', 'result');
+          // Call the log_img function
+          load_img();
+
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      function loadXMLDoc(id,name) {
+        var xmlhttp;
+          if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+          } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+          }
+            xmlhttp.onreadystatechange = function() {
+              if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById(id).innerHTML = xmlhttp.responseText;
+                // 在加载完成后等待5秒钟，然后再次执行 loadXMLDoc() 函数
+              }
+            }
+            // 修改为GET请求，将路径指定为name.log文件的路径
+            xmlhttp.open("GET", "test/"+name+".log", true);
+            xmlhttp.send();
+          }
+      function loadIMGDoc() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            // code for modern browsers
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for old IE browsers
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var response = xmlhttp.responseText.split('\n');
+                if (response.length >= 2) {
+                    document.getElementById("image1").src = response[0].trim();
+                    document.getElementById("image2").src = response[1].trim();
+                    document.getElementById("image1").style.display = "inline-block";
+                    document.getElementById("image2").style.display = "inline-block";
+                }else {
+                // If there are no images, hide the img elements
+                document.getElementById("image1").style.display = "none";
+                document.getElementById("image2").style.display = "none";
+            }
+            }
+        };
+        xmlhttp.open("GET", "image_urls.txt", true);
+        xmlhttp.send();
+      }
+
+             
+      function log_message(id, name) {
+        setInterval(function() {
+          loadXMLDoc(id, name);
+      }, 3000);
+}
+      function load_img() {
+        setInterval(loadIMGDoc, 3000);
+      }
+
+
+    </script>
+    <script>
+      // 使用AJAX获取文件列表并动态创建链接
+      const fileList = document.getElementById("model_list");
+      
+      fetch('/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/3000/filelist')
+        .then(response => response.json())
+        .then(files => {
+          files.forEach(file => {
+          // 检查文件扩展名是否为.pt
+            if (file.endsWith('.pt') ) {
+              const listItem = document.createElement("li");
+              const link = document.createElement("a");
+              link.textContent = file;
+              link.href = "./weights/" + file;  // 设置链接的href属性
+              listItem.appendChild(link);
+              fileList.appendChild(listItem);
+            }
+          });
+        })
+        .catch(error => console.error('Error fetching model file list:', error));
+      </script>
+      <script>
+        // JavaScript for displaying model list in a modal
+        document.getElementById('showModelList').addEventListener('click', function() {
+            // Show the modal
+            document.getElementById('modelModal').style.display = "block";
+
+            // Get the model list content
+            const modelList = document.getElementById("model_list").innerHTML;
+            
+            // Parse the model list content
+            const models = modelList.split('<li>');
+            models.shift(); // Remove the empty first element
+            
+            // Create a table to display the models
+            const table = document.getElementById("modelTable");
+            table.innerHTML = ""; // Clear existing content
+            
+            // Add table headers
+            const headerRow = table.insertRow();
+            const headerCell = headerRow.insertCell();
+            headerCell.textContent = "模型文件";
+            
+            // Add model rows to the table
+            models.forEach(model => {
+                const modelRow = table.insertRow();
+                const modelCell = modelRow.insertCell();
+                modelCell.innerHTML = model;
+            });
+        });
+
+        // Close the modal when the close button is clicked
+        document.getElementsByClassName('close')[0].addEventListener('click', function() {
+            document.getElementById('modelModal').style.display = "none";
+        });
+
+      </script>
+</html>

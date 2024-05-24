@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="brain_web.css">
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="head">
+            <h1>General Intelligent Analysis Platform for Brain Neuroimaging Experimental Paradigm</h1>
+        </div>
+        <div class="container">
+            <div class="left">
+                <div class="block_title">
+                    <p align="center">数据</p>
+                </div>
+                <div id="upload">
+                    <div>
+                        <input type="file" id="folder-input" directory webkitdirectory mozdirectory /> 
+                    </div>
+                    <div>
+                        <select id="file-list" size="50"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="middle">
+                <div class="block_title">
+                    <p align="center">深度学习模型训练</p>
+                </div>
+                <div id="guochen">
+                    <div></div>
+                  <div>
+                    <button type="button" onclick="myFunction()">Request</button>
+                  </div>
+                  <div>
+                    <textarea name="textarea"  cols="50" rows="10" id="textarea" style="margin: 0 auto; width: 90%;display: block;height: 250px;"></textarea>
+                  </div>
+                  <div style="width: 500px; height: 200px;">
+                    <div style="margin: 0 auto;width: 100%; height: 100%;">
+                      <img src="result/training_validation_loss_BxpsY.png" alt="" style="float: left; width: 220px;height: 200px;border-radius: 10px;margin: 10px;">
+                      <img src="result/validation_accuracy_BxpsY.png" alt=""style="float: left; width: 220px; height: 200px; border-radius: 10px; margin: 10px;">
+                    </div>
+                  </div>
+                </div>
+                <div id="params">
+
+                </div>
+                <div id="model_params">
+                    <div id="download_model">
+
+                    </div>
+                </div>
+                <div id="result">
+                    
+                </div>
+            </div>
+            <div class="right">
+                <div class="right-first">
+                    <div class="block_title">
+                        <p align="center">脑影像</p>
+                    </div>
+                </div>
+                <div class="right-second">
+                    <div class="block_title">
+                        <p align="center">脑功能区</p>
+                    </div>
+                </div>
+                <div class="right-third">
+                    <div class="block_title">
+                        <p align="center">脑纤维</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+
+    <script type="text/javascript">
+      function loadXMLDoc() {
+        var xmlhttp;
+          if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+          } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+          }
+            xmlhttp.onreadystatechange = function() {
+              if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("textarea").innerHTML = xmlhttp.responseText;
+                // 在加载完成后等待5秒钟，然后再次执行 loadXMLDoc() 函数
+              }
+            }
+            // 修改为GET请求，将路径指定为log.log文件的路径
+            xmlhttp.open("GET", "log.log", true);
+            xmlhttp.send();
+          }
+          
+      function myFunction() {
+        setInterval(loadXMLDoc, 3000);
+      }
+      </script>
+</html>
