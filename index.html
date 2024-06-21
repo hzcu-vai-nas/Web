@@ -65,6 +65,7 @@
           }
           body{
               background-color: #f5f6f7;
+              color: white;
               margin: 0 auto;
           }
           p{
@@ -86,7 +87,7 @@
           .head h1{
               text-align: center;
               line-height: 45px;
-              color: white;
+             
           }
           .container{
               margin: 0 auto;
@@ -102,13 +103,8 @@
               margin: 5px; /* 去除边距 */
               padding: 0; /* 去除内边距 */
           }
-          .left input{
-              margin: 0 15px;
-          }
-          .left select{
-              width: 250px;
-              margin: 10px 15px;
-          }
+        
+        
           #do_work h3{
               display: block;
               margin: 10px auto;
@@ -159,10 +155,11 @@
           }
           .right{
               float: left;
-              width: 670px; /* 调整右侧块宽度 */
-              height: 1000px;
+              width: 500px; /* 调整右侧块宽度 */
+              height: 1232px;
               border-radius: 5px;
               margin: 5px; /* 去除边距 */
+              height: 40%;
           }
           .right p{
               line-height: 40px;
@@ -183,26 +180,118 @@
               margin: 5px; /* 去除边距 */
           }
           .block_title{
-              height: 40px;
-          }
+    width: 299px;
+ 
+}
+#healthy_brain_option{
+    width: 300px; /* 按钮宽度 */
+    height: 50px; /* 按钮高度 */
+    background-color: #2077d489;
+    border: none;
+    cursor: pointer;  /*光标点击后变成一只手*/
+    text-align: center; /* 文字居中 */
+    font-size: 16px; /* 字体大小改变 */
+    font-weight: bold; /* 字体加粗 */
+}
+
+#disease_brain_option{
+    width: 300px; /* 按钮宽度 */
+    height: 50px; /* 按钮高度 */
+    background-color: #2077d489;
+    border: none;
+    cursor: pointer;  /*光标点击后变成一只手*/
+    text-align: center; /* 文字居中 */
+    font-size: 16px; /* 字体大小改变 */
+    font-weight: bold; /* 字体加粗 */
+}
+#brain_tumor{
+    width: 300px; /* 按钮宽度 */
+    height: 50px; /* 按钮高度 */
+    background-color: #2077d489;
+    border: none;
+    cursor: pointer;  /*光标点击后变成一只手*/
+    text-align: center; /* 文字居中 */
+    font-size: 16px; /* 字体大小改变 */
+    font-weight: bold; /* 字体加粗 */
+}
+    /* 设置表格容器的大小和样式 */
+
+   
+#TableContainer{
+    
+        width: 299px;
+        height: 500px;
+        overflow-x: auto; /* 添加水平滚动条 */
+        overflow-y: auto; /* 添加垂直滚动条 */
+        border: 1px solid #000000cb; /* 添加边框 */
+        background-color: #2077d489;
+        margin-bottom: 20px; /* 增加下方间距 */
+    
+}
+
+th, td {
+    border: 1px solid #000000cb;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #000000cb;
+}
         </style>
     </head>
     <body style="background-color: #f5f6f7;margin: 0 auto;">
       <div class="head">
             <h1>General Intelligent Analysis Platform for Brain Neuroimaging Experimental Paradigm</h1>
       </div>
-      <div class="container">
+      <div class="container">  
         <div class="left">
+          <select name="file_option" id="healthy_brain_option" title="healthy_brain_option"  name="healthy_brain_option">
+            <option  disabled selected>请您选择健康人脑数据集</option>
+            <optgroup label="GroupHC">
+                <option value="ControlHC01">ControlHC01</option>
+                <option value="ControlHC02">ControlHC02</option>
+                <option value="ControlHC03">ControlHC03</option>
+                <option value="ControlHC04">ControlHC04</option>
+            </optgroup>                                          
+          </select>
+
+          <select name="file_option" id="disease_brain_option" title="disease_brain_option" name="disease_brain_option">
+            <option  disabled selected>请您选择患病人脑数据集</option>
+            <optgroup label="GroupPD">
+                <option value="DiseasePD01">DiseasePD01</option>
+                <option value="DiseasePD02">DiseasePD02</option>      
+                <option value="DiseasePD03">DiseasePD03</option>
+                <option value="DiseasePD04">DiseasePD04</option>
+                <option value="DiseasePD05">DiseasePD05</option>
+            </optgroup>                             
+          </select>
+      
+          <select name="file_option" id="brain_tumor" title="brain_tumor_option" name="brain_tumor_option">
+            <option  disabled selected>请您选择脑肿瘤数据集</option>
+            <optgroup label="brain_tumor">
+                <option value="brain_tumor_data1">brain_tumor_data1</option>      
+            </optgroup>                             
+          </select>
+
           <div class="block_title">
             <p align="center">数据</p>
-          </div>
+        </div>
+        
+          <div class="TableContainer" id="TableContainer">
+            <table id="MyTable">
+                <!-- 这里通过 JavaScript 动态生成表头 -->
+                    <!-- 在此处进行表格数据的呈现 -->
+            </table>
+        </div>
+
+       
+          
           <div id="upload">
-            <div>
-              <input type="file" id="folder-input" directory webkitdirectory mozdirectory /> 
-            </div>
-            <div>
-              <select id="file-list" size="50"></select>
-            </div>
+           
+          
+
+
             <div id="do_work">
               <h3 id="ChoiceExecute">请选择你需要执行的深度学习任务：</h3>
               <div id="Exeucutions">
@@ -284,6 +373,304 @@
     </body>
     
     <script>
+//数据输入
+var ControlHC01= ['3104-2011-02-14','3104-2012-04-20','3161-2011-07-28','3161-2012-09-04','3165-2011-06-16','3165-2012-05-24'];
+var ControlHC02= ['3112-2011-06-27','3112-2012-05-23','3114-2011-08-10','3114-2012-08-15','3115-2011-08-01','3115-2012-07-18'];
+var ControlHC03= ['3813-2011-10-24','3813-2012-10-16','3816-2011-11-28','3816-2012-12-04','3817-2011-12-19','3817-2013-01-15'];
+var ControlHC04= ['3750-2011-05-25','3750-2012-10-10','3756-2011-10-19','3756-2012-10-17','3759-2011-11-02','3759-2012-11-21']; 
+
+var DiseasePD01= ['3104-2011-02-14','3104-2012-04-20','3161-2011-07-28','3161-2012-09-04','3165-2011-06-16','3165-2012-05-24'];
+var DiseasePD02= ['3112-2011-06-27','3112-2012-05-23','3114-2011-08-10','3114-2012-08-15','3115-2011-08-01','3115-2012-07-18'];
+var DiseasePD03= ['3813-2011-10-24','3813-2012-10-16','3816-2011-11-28','3816-2012-12-04','3817-2011-12-19','3817-2013-01-15'];
+var DiseasePD04= ['3750-2011-05-25','3750-2012-10-10','3756-2011-10-19','3756-2012-10-17','3759-2011-11-02','3759-2012-11-21']; 
+var i  = 0 ;
+var brain_tumor_data;
+var  Data = {};
+var selectedValue;
+var ControlHC;
+
+document.addEventListener("DOMContentLoaded", function() {
+ 
+    var healthySelectElement = document.getElementById('healthy_brain_option');
+    var diseaseSelectElement = document.getElementById('disease_brain_option');
+    var tumorSelectElement   = document.getElementById('brain_tumor');
+    if (healthySelectElement) {
+        //添加change事件监听器
+        healthySelectElement.addEventListener('change', function(event) {
+            var selectedValue = healthySelectElement.value;
+            console.log("所选择的健康人脑数据集为:" + selectedValue);
+            //updateUnselectedOptions(healthySelectElement,healthySelectElement.value);
+            switch(selectedValue){
+                case "ControlHC01":data_arrange_one(selectedValue,ControlHC01);break;
+                case "ControlHC02":data_arrange_one(selectedValue,ControlHC02);break;
+                case "ControlHC03":data_arrange_one(selectedValue,ControlHC03);break;
+                case "ControlHC04":data_arrange_one(selectedValue,ControlHC04);break;
+   
+           }
+           diseaseSelectElement.value="";
+           tumorSelectElement.value = "";
+       console.log( " selectedValue.value is " + healthySelectElement.value);
+       console.log("selectedValue.textContent is " + healthySelectElement.textContent);
+       console.log("title is " +  healthySelectElement.title);
+        });
+    } else {
+        console.error("无法找到健康人脑数据集");
+    }
+
+    if (diseaseSelectElement) {
+        //添加change事件监听器
+        diseaseSelectElement.addEventListener('change', function(event) {
+            var selectedValue = diseaseSelectElement.value;
+            console.log("所选择的患病人脑数据集为:" + selectedValue);
+           // updateUnselectedOptions(diseaseSelectElement,diseaseSelectElement.value);
+            switch(selectedValue){
+                case "DiseasePD01":data_arrange_one(selectedValue,DiseasePD01);break;
+                case "DiseasePD02":data_arrange_one(selectedValue,DiseasePD02);break;
+                case "DiseasePD03":data_arrange_one(selectedValue,DiseasePD03);break;
+                case "DiseasePD04":data_arrange_one(selectedValue,DiseasePD04);break;
+                case "DiseasePD05":data_arrange_one(selectedValue,DiseasePD05);break;
+           }  
+      
+           healthySelectElement.value="";
+           tumorSelectElement.value="";
+        });
+    } else {
+        console.error("无法找到患病人脑数据集");
+    }
+    
+    if (tumorSelectElement) {
+        //添加change事件监听器
+        tumorSelectElement.addEventListener('click', function(event) {
+            var selectedValue = tumorSelectElement.value;
+            console.log("所选择的脑肿瘤数据集为:" + selectedValue);
+           
+            switch(selectedValue){
+
+                case "brain_tumor_data1":GetData(selectedValue);break;
+    
+           }  
+           healthySelectElement.value = "";
+           diseaseSelectElement.value = "";
+        });
+    } else {
+        console.error("无法找到患病人脑数据集");
+    }
+});
+
+
+
+
+function clearTable(selectedValue) {
+    var table = document.getElementById("MyTable");
+    if (table) {
+        while (table.rows.length > 0) {
+            table.deleteRow(0); // 删除每一行
+        }
+        console.log("表格内容已清空");
+    } else {
+        console.log("找不到表格");
+    }
+}
+
+
+function  data_arrange_one(selectedValue,ControlHC){
+    console.log("所选文件的数据集名称是" + selectedValue);
+    console.log("所选ControlHC的数据集名称是" + ControlHC);
+    var i,j,k;
+    var table = document.getElementById("MyTable");
+    clearTable(selectedValue); // 清空表格
+    for (var i = 0; i < ControlHC.length; i++) { // 示例生成1行
+        var row = table.insertRow();
+        for (var j = 0; j <4; j++) { // 示例生成列
+            var cell = row.insertCell();
+           
+                if(j == 0 ) {
+                    cell.textContent = ControlHC[i];
+                   
+                    cell.style.width = "135px";
+                } 
+                if(j == 1 )  {
+                    cell.textContent = "脑影像";
+                    //cell.style.width = "50px";
+                    cell.style.textAlign = "center";
+                }
+                if(j == 2 )  {
+                    cell.textContent = "脑纤维"; 
+                    //cell.style.width = "50px";
+                    cell.style.textAlign = "center";
+                }         
+                if(j == 3 )  {
+                    cell.textContent = "脑切片";  
+                    //cell.style.width = "50px";
+                    cell.style.textAlign = "center";
+                } 
+               if (j != 0) {
+        // 为单元格添加点击事件
+        (function(selectedValue,cellValue, columnIndex) {
+            cell.addEventListener('click', function(event) {
+                var cells = table.getElementsByTagName('td');
+                for (var k = 0; k < cells.length; k++) {
+                    cells[k].style.fontWeight = "normal"; // 取消上一个点击单元格的加粗效果
+                    cells[k].style.backgroundColor = ""; // 取消上一个点击单元格的背景颜色
+                }
+                this.style.fontWeight = "bold"; // 当前点击的单元格字体加粗
+                this.style.backgroundColor = "lightblue"; // 当前点击的单元格背景颜色
+    
+                // 向后端发送字符串
+                sendStringToBackend(selectedValue + cellValue + columnIndex);
+    
+                console.log("okokokokokokokokokokokok");
+             
+                    });
+                })(selectedValue,selectedValue[i], j);
+            }
+    
+                    
+        }
+    }
+          
+}   
+
+function GetData(selectedValue){
+    console.log("所选文件的数据集名称是" + selectedValue);
+    console.log("所选ControlHC的数据集名称是" + ControlHC);
+    fetch('1.json')
+    .then(Response => Response.json()) // 接收json格式
+    .then(data =>{
+        brain_tumor_data = data; // 将json格式数据存储至全局变量
+        const jsonObject = brain_tumor_data[0];
+        Data = Object.keys(jsonObject);
+        console.log("Data is " + Data[0]); 
+        console.log("brain_tumor_data is " + brain_tumor_data);
+        console.log("brain_tumor_data.length is " + brain_tumor_data.length); // 110
+        console.log("brain_tumor_data[0] is " + brain_tumor_data[0]);
+        console.log("Object.keys(brain_tumor_data[0]) is " + Object.keys(brain_tumor_data[0]));
+        console.log("Object.keys(brain_tumor_data[0]).length is " + Object.keys(brain_tumor_data[0]).length); // 18
+        console.log("brain_tumor_data[0].Patient is " + brain_tumor_data[0].Patient); // TCGA_CS_4941
+
+        // 遍历数据并输出病人的名字
+        // brain_tumor_data.forEach(patient => {
+        //     console.log(patient.Patient);
+        // });
+        data_arrange_two(selectedValue);
+    });  
+}
+
+function data_arrange_two(selectedValue){
+    console.log("所选文件的数据集名称是" + selectedValue);
+    console.log("所选ControlHC的数据集名称是" + ControlHC);
+    var table = document.getElementById("MyTable");
+    clearTable(selectedValue); // 清空表格
+    if (!brain_tumor_data) {
+        console.error("brain_tumor_data 尚未获取，请稍后再试");
+        return;
+    }
+    console.log("获取成功");
+    
+    var keys = Object.keys(brain_tumor_data[0]);
+    console.log("keys is " + keys);
+    console.log("keys.length is " + keys.length);
+    console.log("keys[2] is " + keys[2]);
+    
+    // 插入表头行
+    var headerRow = table.insertRow();
+    keys.forEach(key => {
+        var headerCell = headerRow.insertCell();
+        headerCell.textContent = key;
+        headerCell.style.width = "135px";
+    });
+
+    // 插入数据行
+    for (var i = 0; i < brain_tumor_data.length; i++) { 
+        var row = table.insertRow();
+        
+        var values = Object.values(brain_tumor_data[i]);
+        console.log("键值的值是 " + values);
+        console.log("键值个数是 " + values.length);
+
+        for (var j = 0; j < keys.length; j++) { 
+            var cell = row.insertCell();                 
+            cell.textContent = values[j];
+            if (cell.textContent < 0) cell.textContent = "NULL";
+            console.log("各个 cell.textContent信息是" + cell.textContent);
+                   
+            cell.style.width = "135px";
+            
+            if (j != 0) { // 第一列不加点击效果
+                // 为单元格添加点击事件
+                cell.addEventListener('click', (function(cell, selectedValue) {
+                    return function(event) {
+                        var cells = table.getElementsByTagName('td');
+                        for (var k = 0; k < cells.length; k++) {
+                            cells[k].style.fontWeight = "normal"; // 取消上一个点击单元格的加粗效果
+                            cells[k].style.backgroundColor = ""; // 取消上一个点击单元格的背景颜色
+                        }
+                        cell.style.fontWeight = "bold"; // 当前点击的单元格字体加粗
+                        cell.style.backgroundColor = "lightblue"; // 当前点击的单元格背景颜色
+
+                        // 向后端发送字符串
+                        //sendStringToBackend(selectedValue + cellValue + columnIndex);
+
+                        console.log("okokokokokokokokokokokok");
+                    };
+                })(cell, selectedValue));
+            }
+        }
+    }
+}
+
+ 
+function sendStringToBackend(value) {
+    // 创建 XMLHttpRequest 对象
+    var xhr = new XMLHttpRequest();
+   
+    // 设置请求方式和地址
+    xhr.open("POST", "http://127.0.0.1:8080", true);
+    
+    // 设置请求头
+    xhr.setRequestHeader("Content-Type", "application/json");
+        // 发送数据
+    xhr.send(JSON.stringify({ string: value }));
+    console.log("load in successfully");
+    console.log(JSON.stringify({ string: value }));
+    // 监听状态变化
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4){
+            if(xhr.status == 200){
+                console.log("String sent successfully to backend!");
+                console.log("Process callback", responseText);
+           if(i!=0)  handleBackendResponse(xhr.responseText);//处理后端响应
+           i++;
+            }
+          }    
+        }
+    };
+    
+
+
+
+
+function handleBackendResponse(responseText) {
+    // 处理后端响应，根据需要执行相应操作
+    console.log("Received response from backend:", responseText);
+    // 在这里可以根据后端的响应来执行相应的操作，比如取消选择表格的样式操作
+    // 清除选择表格的样式操作
+    clearTableStyle();
+}
+
+function clearTableStyle() {
+    var cells = document.getElementsByTagName('td')
+    for (var i = 0; i < cells.length; i++) {
+        cells[i].style.fontWeight = "normal";
+        cells[i].style.backgroundColor = "";
+    }
+}
+
+
+
+
+
+
       //用于执行命令行代码的js程序
       document.getElementById('executeClassify').addEventListener('click', function() {
         const command = 'nnictl create --config ~/notebook/test_code/classify/fenglei.yml'; // 可以修改command执行不同的代码
@@ -408,61 +795,5 @@
 
 
     </script>
-    <script>
-      // 使用AJAX获取文件列表并动态创建链接
-      const fileList = document.getElementById("model_list");
-      
-      fetch('/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/3000/filelist')
-        .then(response => response.json())
-        .then(files => {
-          files.forEach(file => {
-          // 检查文件扩展名是否为.pt
-            if (file.endsWith('.pt') ) {
-              const listItem = document.createElement("li");
-              const link = document.createElement("a");
-              link.textContent = file;
-              link.href = "./weights/" + file;  // 设置链接的href属性
-              listItem.appendChild(link);
-              fileList.appendChild(listItem);
-            }
-          });
-        })
-        .catch(error => console.error('Error fetching model file list:', error));
-      </script>
-      <script>
-        // JavaScript for displaying model list in a modal
-        document.getElementById('showModelList').addEventListener('click', function() {
-            // Show the modal
-            document.getElementById('modelModal').style.display = "block";
-
-            // Get the model list content
-            const modelList = document.getElementById("model_list").innerHTML;
-            
-            // Parse the model list content
-            const models = modelList.split('<li>');
-            models.shift(); // Remove the empty first element
-            
-            // Create a table to display the models
-            const table = document.getElementById("modelTable");
-            table.innerHTML = ""; // Clear existing content
-            
-            // Add table headers
-            const headerRow = table.insertRow();
-            const headerCell = headerRow.insertCell();
-            headerCell.textContent = "模型文件";
-            
-            // Add model rows to the table
-            models.forEach(model => {
-                const modelRow = table.insertRow();
-                const modelCell = modelRow.insertCell();
-                modelCell.innerHTML = model;
-            });
-        });
-
-        // Close the modal when the close button is clicked
-        document.getElementsByClassName('close')[0].addEventListener('click', function() {
-            document.getElementById('modelModal').style.display = "none";
-        });
-
-      </script>
+   
 </html>
