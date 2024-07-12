@@ -679,75 +679,8 @@
               cells[i].style.backgroundColor = "";
           }
       }
-      
-      
-      
-      
-      
-            //用于执行命令行代码的js程序
-            document.getElementById('executeClassify').addEventListener('click', function() {
-              const command = 'nnictl create --config ~/notebook/test_code/classify/fenglei.yml'; // 可以修改command执行不同的代码
-              fetch('/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/3000/runcmd', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ command: command })
-              })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error('网络似乎还没有准备好...');
-                }
-                return response.text();
-              })
-              .then(data => {
-                console.log(data);
-                alert('脚本成功运行！');
-              })
-              .catch(error => {
-                console.error('There was a problem with your fetch operation:', error);
-                alert('Error executing command. Please check server logs.或者已有实验在运行！');
-                // Call the log_message functions
-                log_message('textarea1', 'log');
-                log_message('textarea2', 'params');
-                log_message('textarea3', 'result');
-                // Call the log_img function
-                load_img();
-      
-              });
-            });
-            document.getElementById('executeSegentation').addEventListener('click', function() {
-              const command = 'nnictl create --config ~/notebook/test_code/segentation/segentation.yml'; // 可以修改command执行不同的代码
-              fetch('/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/3000/runcmd', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ command: command })
-              })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error('网络似乎还没有准备好...');
-                }
-                return response.text();
-              })
-              .then(data => {
-                console.log(data);
-                alert('脚本成功运行！');
-              })
-              .catch(error => {
-                console.error('There was a problem with your fetch operation:', error);
-                alert('Error executing command. Please check server logs.或者已有实验在运行！');
-                // Call the log_message functions
-                log_message('textarea1', 'log');
-                log_message('textarea2', 'params');
-                // log_message('textarea3', 'result');
-                // Call the log_img function
-                load_img();
-      
-              });
-            });
     </script>
+    <!--任务执行-->
     <script>
       //用于执行命令行代码的js程序
       document.getElementById('executeClassify').addEventListener('click', function() {
@@ -813,6 +746,7 @@
         });
       });
     </script>
+    <!--运行结果上传-->
     <script type="text/javascript">
       function loadXMLDoc(id,name) {
         var xmlhttp;
@@ -873,6 +807,7 @@
 
 
     </script>
+    <!--模型列表上传-->
     <script>
       // 使用AJAX获取文件列表并动态创建链接
       const fileList = document.getElementById("model_list");
@@ -952,6 +887,7 @@
       });
     
     </script>
+    <!--运行过程-->
     <script>
         // 函数：根据接收到的状态更新检查点的颜色
         function updateCheckpoint(checkpointNumber, status) {
