@@ -15,7 +15,8 @@
           }
           .guochen{
             display: block;
-            width: 500px;
+            margin: 10px;
+            width: 1000px;
             height: 30px;
           }
           .guochen p{
@@ -28,11 +29,12 @@
           #checkpoint_text{
             width: 375px;
             text-align: left;
-            margin-left: 25px;
+            margin-left: 80px;
           }
           #checkpoint1, #checkpoint2 , #checkpoint3{
             width: 100px;
-            font-size: 10px;
+            font-size: 12px;
+            margin-left: 300px;
           }
           /* CSS for modal */
           .modal {
@@ -376,12 +378,73 @@
             </div>
             <div class="content">
                 <div id="section1" style="display: none;">
-                    <h2>Section 1</h2>
-                    <p>This is the content of Section 1.</p>
+                  <div id="nni">
+                    <h3 style="font-size: 15px;display: block;text-align: center;margin: 10px auto;">NNI链接</h3>
+                    <div style="background-color: #7c90ff; margin: 20px auto;width: 95%;height: 40px;border-radius: 10px;">
+                      <a href="http://10.160.196.23:30186/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/8080/oview" style="display: block; text-align: center;margin: 10px auto;line-height: 40px;">跳转至NNI</a>
+                    </div>
+                  </div>
+                  <div id="guochen">
+                    <div>
+                      <h3 style="display: block;margin: 10px auto;width: 100%;height: 20px;font-size: 15px;text-align: center;">运行过程</h3>
+                      <p id="default_text" style="display: block;margin: 0 auto;width: 80%;height: 20px;font-size: 10px;text-align: center;color: gray;">暂无运行的进程</p>
+                      <div id="process">
+                        <div class="guochen">
+                          <p id="checkpoint_text" style="color: grey;">第一步：使用NNI的NAS参数搜索对模型进行搜索</p>
+                          <p id="checkpoint1" style="color: grey;">等待运行</p>
+                        </div>
+                        <div class="guochen">
+                          <p id="checkpoint_text" style="color: grey;">第二步：对模型进行超参搜索</p>
+                          <p id="checkpoint2" style="color: grey;">等待运行</p>
+                        </div>
+                        <div class="guochen">
+                          <p id="checkpoint_text" style="color: grey;">第三步：运行搜索出的最佳模型，获得结果</p>
+                          <p id="checkpoint3" style="color: grey;">等待运行</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div id="section2" style="display: none;">
-                    <h2>Section 2</h2>
-                    <p>This is the content of Section 2.</p>
+                  <div id="model_params" style="display: block; width: 500px; height: 260px;margin: 10px auto;">
+                    <!-- <div style="margin-top: 20px;">
+                      <h3 style="display: block;margin: 10px auto;width: 100%;height: 20px;font-size: 15px;text-align: center;">模型参数</h3>
+                      <textarea name="textarea3"  cols="60" rows="10" id="textarea3" style="margin: 0 auto; width: 90%;display: block;height: 120px;"></textarea>
+                    </div> -->
+                    <div id="download_model">
+                      <h3 style="display: block;margin: 10px auto;width: 100%;height: 20px;font-size: 15px;text-align: center;">模型下载</h3>
+                      <div style="margin: 10px 10px;">
+                        <button id="showModelList">显示模型列表</button>
+                        <ul id="model_list" style="display: none; color: #7c90ff;list-style: none;"></ul>
+                      </div>
+                      <!-- Add a modal -->
+                      <div id="modelModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <table id="modelTable" style="border-collapse: collapse; margin: 10px;"></table>
+                        </div>
+                      </div>
+                      <!-- Add a new modal for detailed model information -->
+                      <div id="detailModelModal" class="modal">
+                        <div class="modal-content">
+                          <span class="close">&times;</span>
+                          <h2 style="text-align: center;">模型详细信息</h2>
+                          
+                          <!-- Section for hyperparameters -->
+                          <div id="hyperparameters">
+                            <h3 style="text-align: center;">超参数</h3>
+                            <textarea id="hyperparametersTextarea" cols="60" rows="10" style="margin: 0 auto; width: 90%; display: block;"></textarea>
+                          </div>
+                          
+                          <!-- Section for model parameters -->
+                          <div id="modelparameters">
+                            <h3 style="text-align: center;">模型参数</h3>
+                            <textarea id="modelparametersTextarea" cols="60" rows="10" style="margin: 0 auto; width: 90%; display: block;"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div id="section3" style="display: none;">
                     <h2>Section 3</h2>
@@ -685,6 +748,10 @@
       //用于执行命令行代码的js程序
       document.getElementById('executeClassify').addEventListener('click', function() {
         const command = 'python NAS_SL_JPG.py'; // 可以修改command执行不同的代码
+        document.getElementById('process').style.display = "block";
+        document.getElementById('guochen').style.height  = "200px";
+        document.getElementById('guochen').style.height  = "200px";
+        document.getElementById('default_text').style.display = "none";
         fetch('/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/3000/runcmd', {
           method: 'POST',
           headers: {
