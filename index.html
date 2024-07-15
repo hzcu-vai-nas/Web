@@ -205,13 +205,12 @@
           }
           /* 设置表格容器的大小和样式 */         
           #TableContainer{
-              
-                  width: 299px;
-                  height: 950px;
-                  overflow-x: auto; /* 添加水平滚动条 */
-                  overflow-y: auto; /* 添加垂直滚动条 */
-                  border: 1px solid #000000cb; /* 添加边框 */
-                  margin-bottom: 20px; /* 增加下方间距 */
+              width: 299px;
+              height: 950px;
+              overflow-x: auto; /* 添加水平滚动条 */
+              overflow-y: auto; /* 添加垂直滚动条 */
+              border: 1px solid #000000cb; /* 添加边框 */
+              margin-bottom: 20px; /* 增加下方间距 */
               
           }
 
@@ -309,6 +308,10 @@
             margin-left: 10px;
             border-radius: 10px;
             background-color: white;
+          }
+          .content > div{
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
           }
           .content h2{
             text-align: center;
@@ -1033,12 +1036,16 @@
           var contentDivs = document.querySelectorAll('.content > div');
           contentDivs.forEach(function(div) {
               div.style.display = 'none';
+              div.style.opacity  = '0';
           });
 
           // Show the selected content div
           var selectedDiv = document.getElementById(sectionId);
           if (selectedDiv) {
               selectedDiv.style.display = 'block';
+              setInterval(() => {
+                selectedDiv.style.opacity = '1';
+              }, 100);
           }
       }
     </script>
