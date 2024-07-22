@@ -3,6 +3,8 @@ const fs = require('fs');
 const { exec } = require('child_process');
 const path = require('path');  // 添加这里
 
+
+
 const server = http.createServer((req, res) => {
     if (req.method === 'POST' && req.url === '/runcmd') {
         let body = '';
@@ -68,13 +70,34 @@ const server = http.createServer((req, res) => {
             readStream.pipe(res);
           }
         });
+    }else if (req.method === 'POST' && req.url === '/upload') {
+        // 创建一个可写流来保存上传的文件
+        const filePath = path.join(__dirname, 'uploads', 'uploaded_file.pt');
+        const writeStream = fs.createWriteStream(filePath);
+
+        // 将请求数据流管道到可写流
+        req.pipe(writeStream);
+
+        // 当上传完成时
+        writeStream.on('finish', () => {
+            console.log('File uploaded successfully');
+            res.writeHead(200, { 'Content-Type': 'text/plain' });
+            res.end('File uploaded!');
+        });
+
+        // 如果发生错误
+        writeStream.on('error', (err) => {
+            console.error('Error uploading file:', err);
+            res.writeHead(500);
+            res.end('Internal Server Error');
+        });
     }else{
         // 读取静态文件
         let filePath = '.' + req.url; // 获取请求的URL路径
 
         // 如果请求的是根路径(/)，则默认加载index.html
         if (filePath === './') {
-            filePath = './index.html';
+            filePath = './test.html';
         }
 
         // 读取文件
