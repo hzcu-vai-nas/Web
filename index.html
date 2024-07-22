@@ -6,6 +6,34 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
         <style>
+          .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999; /* 确保在最上层 */
+          }
+          /* 样式用于提示框 */
+          .message-box {
+              background-color: white;
+              padding: 20px;
+              border-radius: 10px;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+              opacity: 0; /* 初始透明度为0，将通过动画显示 */
+              transition: opacity 0.3s ease-in-out; /* 添加过渡效果 */
+              text-align: center;
+          }
+          .unclickable{
+            pointer-events: none;
+          }
+          .unclickable a{
+            color: grey !important;
+          }
           #process{
             display: none;
           }
@@ -78,8 +106,8 @@
           }
           #modelModal_list{
             display: none;
-            border: 3px solid #3f3f3f;
-            border-radius: 3%;
+            border-right: 3px solid #7c90ff;
+            border-left: 3px solid #7c90ff;
           }
           #modelTable a{
             color: #7c90ff;
@@ -93,14 +121,11 @@
               font-size: 28px;
               font-weight: bold;
           }
-
-          .close:hover,
-          .close:focus {
+          .close:hover,.close:focus {
               color: black;
               text-decoration: none;
               cursor: pointer;
           }
-
           a{
               text-decoration: none;
               font-size: 15px;
@@ -147,43 +172,43 @@
           .container{
               margin: 0 auto;
               width: 1500px;
-              height: 950px;
+              height: 1060px;
           }
           .left{
               float: left;
               width: 300px;
               height: 1020px;
               border-radius: 5px;
-              background-color: white;
               margin: 5px; /* 去除边距 */
               padding: 0; /* 去除内边距 */
           }
           #dataset_button{
               width: 300px; /* 按钮宽度 */
-              height: 50px; /* 按钮高度 */
+              height: 75px; /* 按钮高度 */
               background-color: #7c90ff;
               border: none;
+              border-radius: 5px;
+              margin-bottom: 14px;
               cursor: pointer;  /*光标点击后变成一只手*/
               text-align: center; /* 文字居中 */
               font-size: 16px; /* 字体大小改变 */
               font-weight: bold; /* 字体加粗 */
-          }
-          /* 设置表格容器的大小和样式 */         
+              color: white;
+          }         
           #TableContainer{
               width: 299px;
-              height: 950px;
+              height: 933px;
+              border-radius: 5px;
               overflow-x: auto; /* 添加水平滚动条 */
               overflow-y: auto; /* 添加垂直滚动条 */
-              border: 1px solid #000000cb; /* 添加边框 */
-              margin-bottom: 20px; /* 增加下方间距 */              
+              margin-bottom: 20px; /* 增加下方间距 */  
+              background-color: white;            
           }
-
           .left th,.left  td {
               border: 1px solid #000000cb;
               padding: 8px;
               text-align: left;
           }
-
           .left th {
               background-color: #000000cb;
           }
@@ -196,7 +221,8 @@
           }
           #do_work h3{
               display: block;
-              margin: 10px auto;
+              margin: 6px auto;
+              margin-bottom: 10px !important;
               width: 100%;
               height: 20px;
               font-size: 15px;
@@ -218,10 +244,32 @@
               margin-right: 40px;
               background-color: #7c90ff;
               color: #f5f6f7;
-              width: 100px;
+              width: 150px;
               height: 30px;
               border: 0;
               border-radius: 10px;
+              transition: opacity 0.5s ease;
+          }
+          #Exeucutions_custom{
+            display: flex;
+            width: 100%;
+            height: 100px;
+            justify-content: center;
+            align-items: center;
+          }
+          #Exeucutions_custom button{
+              display: block;
+              float: left;
+              margin-top: -5px;
+              margin-left: 40px;
+              margin-right: 40px;
+              background-color: #7c90ff;
+              color: #f5f6f7;
+              width: 150px;
+              height: 30px;
+              border: 0;
+              border-radius: 10px;
+              transition: opacity 0.5s ease;
           }
           #showModelList{
             display: block;
@@ -240,10 +288,10 @@
           }
           .work_choice{
               width: 1170px;
-              height: 70px;
+              height: 75px;
               border-radius: 5px;
               background-color: white;
-              margin: 5px; /* 去除边距 */
+              margin: 0 5px 5px 5px; /* 去除边距 */
           }
           .result{
               width: 1170px; /* 调整右侧块宽度 */
@@ -257,7 +305,7 @@
           }
           .sidebar {
             display: block;
-            width: 100px; /* 左侧导航栏宽度 */
+            width: 150px; /* 左侧导航栏宽度 */
             background-color: white;
             border-radius: 10px;
             height: 895px;
@@ -266,7 +314,7 @@
           }
           .content {
             display: block;
-            width: 1018px;
+            width: 970px;
             float: left;
             height: 935px;
             margin-left: 10px;
@@ -279,6 +327,9 @@
           }
           .content h2{
             text-align: center;
+          }
+          .content h3{
+            margin-left: 20px;
           }
           .sidebar ul {
             list-style-type: none;
@@ -304,16 +355,162 @@
             background-color: #7c90ff;
             color: white;
           }
+          #customize_params{
+            display: block;
+            height: 450px;
+          }
+          #param_list{
+            display: flex;
+            height: 50px;
+            line-height: 50px;
+            justify-content: center;
+          }
+          #param_list button{
+            display: block;
+            float: left;
+            margin-top: -5px;
+            margin-left: 20px;
+            margin-right: 20px;
+            background-color: #7c90ff;
+            color: #f5f6f7;
+            width: 150px;
+            height: 30px;
+            border: 0;
+            border-radius: 10px;
+          }
+          #parameters_list{
+            text-align: center;
+          }
+          #generate{
+            display: block;
+            width: 100%;
+            height: 40px;
+          }
+          #generate button{
+            display: block;
+            float: right;
+            margin-top: -5px;
+            margin-left: 20px;
+            margin-right: 20px;
+            background-color: #7c90ff;
+            color: #f5f6f7;
+            width: 200px;
+            height: 35px;
+            border: 0;
+            border-radius: 10px;
+          }
+          .parameter {
+            margin-bottom: 10px;
+          }
+          .parameter input{
+            border: 2px solid #7c90ff;
+            border-radius: 5%;
+          }
+          .parameter button{
+            margin-left: 40px;
+            background-color: #7c90ff;
+            color: white;
+            border: 5px solid #7c90ff;
+            border-radius: 5px;
+          }
+          .parameter span {
+            display: inline-block;
+            margin-left: 20px;
+            margin-right: 20px;
+            background-color: #7c90ff;
+            color: #f5f6f7;
+            width: 150px;
+            height: 30px;
+            border: 0;
+            border-radius: 10px;
+            line-height: 30px;
+            text-align: center;
+          }
+          form {
+            margin-bottom: 20px;
+          }
+          #uploadForm input::before {
+            content: 'Select your model'; /* Your custom text here */
+            display: block;
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            background-color: #7c90ff;
+            color: white;
+            border: 1px solid #7c90ff;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            text-align: center;
+          }
+          #uploadForm input {
+              position: relative;
+              display: inline-block;
+              width: 200px; 
+              height: 30px;
+              overflow: hidden;
+              border-radius: 5px;
+              margin-left: 40px;
+          }
+          #customize_model{
+            display: block;
+            height: 100px;
+          }
+          #customize_model button{
+              height: 30px;
+              width: 100px;
+              line-height: 30px;
+              margin-left: 80px;
+              background-color: #7c90ff;
+              border: 1px solid #7c90ff;
+              border-radius: 5px;
+              color: white;
+          }
+          .progress {
+              width: 100%;
+              height: 20px;
+              background-color: #f0f0f0;
+              margin-top: 10px;
+              display: none; /* Initially hide progress bar */
+          }
+          .progress-bar {
+              height: 80%;
+              background-color: #7c7c7c;
+              text-align: center;
+              line-height: 20px;
+              color: white;
+          }
+          .cancel button{
+              display: block;
+              height: 30px;
+              width: 100px;
+              float: right;
+              line-height: 30px;
+              margin-right: 50px;
+              background-color: #7c90ff;  
+              border: 0;
+              border-radius: 5px;
+              color: white;
+          }
         </style>
     </head>
     <body style="background-color: #f5f6f7;margin: 0 auto;">
+      <div class="overlay" id="overlay">
+        <div class="message-box" id="messageBox">
+            <!-- 提示框内容 -->
+            <p id="messageText"></p>
+        </div>
+    </div>
       <div class="head">
             <h1>General Intelligent Analysis Platform for Brain Neuroimaging Experimental Paradigm</h1>
       </div>
       <div class="container">
         <div class="left">
           <input type="file" id="fileInput" webkitdirectory multiple style="display: none;" />
-          <button id="dataset_button">选择数据集</button>                                        
+          <button id="dataset_button">Upload Datasets</button>                                        
           <div class="TableContainer" id="TableContainer">
               <table id="MyTable">               
               </table>
@@ -322,38 +519,39 @@
         <div class="right">
           <div class="work_choice">
             <div id="do_work">
-              <h3 id="ChoiceExecute">请选择你需要执行的深度学习任务：</h3>
+              <h3 id="ChoiceExecute">Please select the AutoML task you need to perform:</h3>
               <div id="Exeucutions">
-                <button id="executeClassify" style="display: block;">分类工作</button>
-                <button id="executeSegentation" style="display: block;">分割工作</button>
-                <button id="executeSellback" style="display: block;">回归工作</button>
-                <button id="executeCustom" style="display: block;">自定义</button>
+                <button id="executeClassify" style="display: block;">Classification</button>
+                <button id="executeSegentation" style="display: block;">Segentation</button>
+                <button id="executeSellback" style="display: block;">SellBack</button>
+                <button id="executeCustom" style="display: block;">Customize</button>
               </div>
             </div>
           </div>
           <div class="result">
             <div class="sidebar">
               <ul>
-                  <li id="button_section1"><a href="#" onclick="showContent('section1')">运行过程</a></li>
-                  <li id="button_section2"><a href="#" onclick="showContent('section2')">模型输出</a></li>
-                  <li id="button_section3"><a href="#" onclick="showContent('section3')">运行结果</a></li>
-                  <li id="button_section4"><a href="#" onclick="showContent('section4')">统计数据</a></li>
-                  <li id="button_section5" style="margin-top: 400px;"><a href="#" onclick="showContent('section5')">关于我们</a></li>
-                  <li id="button_section6"><a href="#" onclick="showContent('section6')">设置</a></li>
+                  <li id="button_section1"><a href="#" onclick="showContent('section1')">Running Process</a></li>
+                  <li id="button_section2" class="unclickable"><a href="#" onclick="showContent('section2')">custom</a></li>
+                  <li id="button_section3"><a href="#" onclick="showContent('section3')">Model Output</a></li>
+                  <li id="button_section4"><a href="#" onclick="showContent('section4')">Result</a></li>
+                  <li id="button_section5"><a href="#" onclick="showContent('section5')">statistical data</a></li>
+                  <li id="button_section6" style="margin-top: 400px;"><a href="#" onclick="showContent('section6')">About us</a></li>
+                  <li id="button_section7"><a href="#" onclick="showContent('section7')">Setting</a></li>
               </ul>
             </div>
             <div class="content">
                 <div id="section1" style="display: none;">
                   <div id="nni">
-                    <h3 style="font-size: 15px;display: block;text-align: center;margin: 10px auto;">NNI链接</h3>
+                    <h3 style="font-size: 15px;display: block;text-align: center;margin: 10px auto;">NNI Link</h3>
                     <div style="background-color: #7c90ff; margin: 20px auto;width: 95%;height: 40px;border-radius: 10px;">
-                      <a href="http://10.160.196.23:30186/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/8080/oview" style="display: block; text-align: center;margin: 10px auto;line-height: 40px;">跳转至NNI</a>
+                      <a href="http://10.160.196.23:30186/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/8080/oview" style="display: block; text-align: center;margin: 10px auto;line-height: 40px;">Jump to NNI</a>
                     </div>
                   </div>
                   <div id="guochen">
                     <div>
-                      <h3 style="display: block;margin: 10px auto;width: 100%;height: 20px;font-size: 15px;text-align: center;">运行过程</h3>
-                      <p id="default_text" style="display: block;margin: 0 auto;width: 80%;height: 20px;font-size: 10px;text-align: center;color: gray;">暂无运行的进程</p>
+                      <h3 style="display: block;margin: 10px auto;width: 100%;height: 20px;font-size: 15px;text-align: center;">Running Processing</h3>
+                      <p id="default_text" style="display: block;margin: 0 auto;width: 80%;height: 20px;font-size: 10px;text-align: center;color: gray;">No running process yet</p>
                       <div id="process">
                         <div class="guochen">
                           <p id="checkpoint_text" style="color: grey;">第一步：使用NNI的NAS参数搜索对模型进行搜索</p>
@@ -372,51 +570,89 @@
                   </div>
                 </div>
                 <div id="section2" style="display: none;">
-                    <div id="download_model">
-                      <h3 style="display: block;margin: 10px auto;width: 100%;height: 20px;font-size: 15px;text-align: center;">模型下载</h3>
-                      <div style="margin: 10px 10px;">
-                        <button id="showModelList">显示模型列表</button>
-                        <ul id="model_list" style="display: none; color: #7c90ff;list-style: none;"></ul>
+                  <h2>Customize your hyperparams and model here</h2>
+                  <div id="customize_model">
+                    <h3>Upload your customized model here</h3>
+                    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data" style="float: left;">
+                        <input type="file" name="file"  id="fileInput" required>
+                    </form>
+                    <div style="float: left; display: block;">
+                      <button type="submit">Upload File</button>
+                    </div>
+                    <div id="uploadStatus"></div>
+                    <div class="progress" id="progressContainer">
+                        <div id="progressBar" class="progress-bar"></div>
+                    </div>
+                  </div>
+                  <div id="customize_params">   
+                    <h3>Customize your hyperparams here</h3>          
+                    <div id="param_list">
+                        <button id="momentum" onclick="addParameter('momentum')">momentum</button>
+                        <button id="hidden_size" onclick="addParameter('hidden_size')">hidden_size</button>
+                        <button id="lr" onclick="addParameter('lr')">lr</button>
+                        <button id="batch_size" onclick="addParameter('batch_size')">batch_size</button>
+                    </div>
+                    <div id="parameters_list" style="height: 300px;">
+                      <!-- added params list is here -->
+                    </div>
+                    <div id="generate">
+                      <button id="generate_button" onclick="generateJSON()">Determine and generate JSON</button>
+                    </div>
+                  </div>
+                  <div id="customize_dowork">
+                    <h3>Select the AutoML work here</h3>
+                    <div id="Exeucutions_custom">
+                      <button id="executeClassify" style="display: block;">Classification</button>
+                      <button id="executeSegentation" style="display: block;">Segentation</button>
+                      <button id="executeSellback" style="display: block;">SellBack</button>
+                    </div>
+                  </div>
+                  <div id="cancel_custom" class="cancel">
+                    <button>Cancel</button>
+                  </div>
+                </div>
+                <div id="section3" style="display: none;">
+                  <div id="download_model">
+                    <h2 style="display: block;margin: 40px auto;width: 100%;height: 20px;text-align: center;">Download Models</h2>
+                    <div style="margin: 10px 10px;">
+                      <button id="showModelList">Show Model List</button>
+                      <ul id="model_list" style="display: none; color: #7c90ff;list-style: none;"></ul>
+                    </div>
+                    <!-- Add a modal -->
+                    <div id="modelModal">
+                      <div id="modelModal_list" class="modal-content">
+                          <table id="modelTable" style="border-collapse: collapse; margin: 10px;border: 3px;">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <a href="./weights/trained_model.pt">trained_model.pt</a>
+                                  <a href="#" class="view-details">View</a>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
                       </div>
-                      <!-- Add a modal -->
-                      <div id="modelModal">
-                        <div id="modelModal_list" class="modal-content">
-                            <table id="modelTable" style="border-collapse: collapse; margin: 10px;border: 3px;">
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <a href="./weights/trained_model.pt">trained_model.pt</a>
-                                    <a href="#" class="view-details">查看</a>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
+                    </div>
+                    <!-- Add a new modal for detailed model information -->
+                    <div id="detailModelModal" class="modal">
+                      <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2 style="text-align: center;">Model Details</h2>
+                        S
+                        <!-- Section for hyperparameters -->
+                        <div id="hyperparameters">
+                          <h3 style="text-align: center;">Hyperparameters</h3>
+                          <textarea id="hyperparametersTextarea" cols="60" rows="10" style="margin: 0 auto; width: 90%; display: block;"></textarea>
                         </div>
-                      </div>
-                      <!-- Add a new modal for detailed model information -->
-                      <div id="detailModelModal" class="modal">
-                        <div class="modal-content">
-                          <span class="close">&times;</span>
-                          <h2 style="text-align: center;">模型详细信息</h2>
-                          S
-                          <!-- Section for hyperparameters -->
-                          <div id="hyperparameters">
-                            <h3 style="text-align: center;">超参数</h3>
-                            <textarea id="hyperparametersTextarea" cols="60" rows="10" style="margin: 0 auto; width: 90%; display: block;"></textarea>
-                          </div>
-                          
-                          <!-- Section for model parameters -->
-                          <div id="modelparameters">
-                            <h3 style="text-align: center;">模型参数</h3>
-                            <textarea id="modelparametersTextarea" cols="60" rows="10" style="margin: 0 auto; width: 90%; display: block;"></textarea>
-                          </div>
+                        
+                        <!-- Section for model parameters -->
+                        <div id="modelparameters">
+                          <h3 style="text-align: center;">Model Params</h3>
+                          <textarea id="modelparametersTextarea" cols="60" rows="10" style="margin: 0 auto; width: 90%; display: block;"></textarea>
                         </div>
                       </div>
                     </div>
-                </div>
-                <div id="section3" style="display: none;">
-                    <h2>Section 3</h2>
-                    <p>This is the content of Section 3.</p>
+                  </div>
                 </div>
                 <div id="section4" style="display: none;">
                   <h2>Section 4</h2>
@@ -430,6 +666,10 @@
                   <h2>Section 6</h2>
                   <p>This is the content of Section 6.</p>
                 </div>
+                <div id="section7" style="display: none;">
+                  <h2>Section 6</h2>
+                  <p>This is the content of Section 7.</p>
+                </div>
               
             </div>
           </div>
@@ -440,190 +680,190 @@
       var i  = 0 ;
       var brain_tumor_data;
       var  Data = {};   
-    document.addEventListener('DOMContentLoaded', function() {
-    const dataset_button = document.getElementById('dataset_button');
-    dataset_button.addEventListener('click', function() {
+      document.addEventListener('DOMContentLoaded', function() {
+        const dataset_button = document.getElementById('dataset_button');
+        dataset_button.addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            fileInput.click();
+        });  
         const fileInput = document.getElementById('fileInput');
-        fileInput.click();
-    });  
-    const fileInput = document.getElementById('fileInput');
-    fileInput.addEventListener('change', function(event) {
-        const files = event.target.files;
-        console.log("files is ", files);
-        console.log("files.length is ", files.length);     
-        if (files.length > 0) {
-            processFiles(files);
-        }
-    });
-    function processFiles(files) {        
-        const file_choose = files[0].webkitRelativePath.split('/')[0]; 
-        console.log("file_choose name is " + file_choose);
-        document.getElementById("dataset_button").textContent = file_choose;
-        Array.from(files).forEach(file => {
-            if (file.name.endsWith('.json')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const jsonContent = JSON.parse(e.target.result);
-                        data =  jsonContent;
-                        console.log("jsonContent is " + jsonContent);   
-                        if(file_choose == "Brain_Tumor"){
-                            data_arrange_tumor(file_choose);
-                        }else{
-                            data_arrange_Parkinsonism(file_choose);
-                        }
-                       
-                    }catch (error) {
-                        console.error("Error parsing JSON file:", error);               
-                    }
-                };
-                reader.readAsText(file);
+        fileInput.addEventListener('change', function(event) {
+            const files = event.target.files;
+            console.log("files is ", files);
+            console.log("files.length is ", files.length);     
+            if (files.length > 0) {
+                processFiles(files);
             }
         });
-    }
-});
-    function clearTable() {
-        var table = document.getElementById("MyTable");
-        if (table) {
-            while (table.rows.length > 0) {
-                table.deleteRow(0); 
-            }
-            console.log("表格内容已清空");
-        } else {
-            console.log("找不到表格");
+        function processFiles(files) {        
+            const file_choose = files[0].webkitRelativePath.split('/')[0]; 
+            console.log("file_choose name is " + file_choose);
+            document.getElementById("dataset_button").textContent = file_choose;
+            Array.from(files).forEach(file => {
+                if (file.name.endsWith('.json')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const jsonContent = JSON.parse(e.target.result);
+                            data =  jsonContent;
+                            console.log("jsonContent is " + jsonContent);   
+                            if(file_choose == "Brain_Tumor"){
+                                data_arrange_tumor(file_choose);
+                            }else{
+                                data_arrange_Parkinsonism(file_choose);
+                            }
+                          
+                        }catch (error) {
+                            console.error("Error parsing JSON file:", error);               
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
         }
-    }
-    function  data_arrange_Parkinsonism(filename){
-    console.log("所选文件的数据集名称是" + filename);
-    var i,j;
-    var table = document.getElementById("MyTable");
-    clearTable(); // 清空表格
-    var keys = Object.keys(data[0]);
-    console.log("keys is " + keys);
-    console.log("keys.length is " + keys.length);
-    console.log("keys[2] is " + keys[2]);
-      // 插入表头行
-      var headerRow = table.insertRow();
-      for(var i = 0 ; i < 4 ; i++){
-        var headerCell = headerRow.insertCell();
-       switch (i){
-        case 0 : headerCell.textContent = keys; break;
-        case 1 : headerCell.textContent = "脑影像"; break;
-        case 2 : headerCell.textContent = "脑纤维"; break;
-        case 3 : headerCell.textContent = "脑切片"; break;
-       }
-        headerCell.style.color = "black";
-        headerCell.style.textAlign = "center"; 
+      });
+      function clearTable() {
+          var table = document.getElementById("MyTable");
+          if (table) {
+              while (table.rows.length > 0) {
+                  table.deleteRow(0); 
+              }
+              console.log("表格内容已清空");
+          } else {
+              console.log("找不到表格");
+          }
       }
-    for (var i = 0; i < data.length; i++) {
-        var row = table.insertRow();
-        var values = Object.values(data[i]);
-        console.log("键值的值是 " + values);
-        for (var j = 0; j <4; j++) { 
-            var cell = row.insertCell();
-           
-                if(j == 0 ) {
-                    cell.textContent = values;
-                   
-                    cell.style.color = "black"; 
-                    cell.style.width = "135px";
-                } 
-                if(j == 1 )  {
-                    cell.textContent = "1";
-                    
-                    cell.style.color = "black";
-                    cell.style.textAlign = "center";
-                }
-                if(j == 2 )  {
-                    cell.textContent = "2"; 
-                    cell.style.color = "black";
-                    cell.style.textAlign = "center";
-                }         
-                if(j == 3 )  {
-                    cell.textContent = "3";                   
-                    cell.style.color = "black"; 
-                    cell.style.textAlign = "center";
-                } 
-                 
-               if (j != 0) {
-        (function(selectedValue,cellValue, columnIndex) {
-            cell.addEventListener('click', function(event) {
-                var cells = table.getElementsByTagName('td');
-                for (var k = 0; k < cells.length; k++) {
-                    cells[k].style.fontWeight = "normal"; // 取消上一个点击单元格的加粗效果
-                    cells[k].style.backgroundColor = ""; // 取消上一个点击单元格的背景颜色
-                }
-                this.style.fontWeight = "bold"; // 当前点击的单元格字体加粗
-                this.style.backgroundColor = "grey"; // 当前点击的单元格背景颜色
-               
-                // 向后端发送字符串
-                //sendStringToBackend(selectedValue + cellValue + columnIndex);
-    
-                //console.log("成功发送字符串");
-             
-                    });
-                })(data,data[i], j);
-            }
-    
-                    
-        }
-    }
-          
-}      
-    function data_arrange_tumor(selectedValue){
-        console.log("所选文件的数据集名称是" + selectedValue);
+      function  data_arrange_Parkinsonism(filename){
+        console.log("所选文件的数据集名称是" + filename);
+        var i,j;
         var table = document.getElementById("MyTable");
-        clearTable(selectedValue); // 清空表格
-        if (!data) {
-            console.error("data 尚未获取，请稍后再试");
-            return;
-        }
-        console.log("获取成功");       
+        clearTable(); // 清空表格
         var keys = Object.keys(data[0]);
         console.log("keys is " + keys);
         console.log("keys.length is " + keys.length);
         console.log("keys[2] is " + keys[2]);
-        var headerRow = table.insertRow();
-        keys.forEach((key,index) => {
-            if(index < 2){
-                var headerCell = headerRow.insertCell();
-                headerCell.textContent = key;
-                headerCell.style.color = "black";
-                headerCell.style.width = "135px";
-            }        
-        });
-        // 插入数据行
-        for (var i = 0; i < data.length; i++) { 
+          // 插入表头行
+          var headerRow = table.insertRow();
+          for(var i = 0 ; i < 4 ; i++){
+            var headerCell = headerRow.insertCell();
+          switch (i){
+            case 0 : headerCell.textContent = keys; break;
+            case 1 : headerCell.textContent = "脑影像"; break;
+            case 2 : headerCell.textContent = "脑纤维"; break;
+            case 3 : headerCell.textContent = "脑切片"; break;
+          }
+            headerCell.style.color = "black";
+            headerCell.style.textAlign = "center"; 
+          }
+        for (var i = 0; i < data.length; i++) {
             var row = table.insertRow();
-          
             var values = Object.values(data[i]);
             console.log("键值的值是 " + values);
-            console.log("键值个数是 " + values.length);
-
-            for (var j = 0; j <2; j++) { 
-                var cell = row.insertCell();   
-                cell.style.color = "black";             
-                cell.textContent = values[j];
-                if (cell.textContent < 0) cell.textContent = "NULL";
-                console.log("各个 cell.textContent信息是" + cell.textContent);
+            for (var j = 0; j <4; j++) { 
+                var cell = row.insertCell();
+              
+                    if(j == 0 ) {
+                        cell.textContent = values;
                       
-                cell.style.width = "135px";          
-                    cell.addEventListener('click', (function(cell, selectedValue) {
-                        return function(event) {
-                            var cells = table.getElementsByTagName('td');
-                            for (var k = 0; k < cells.length; k++) {
-                                cells[k].style.fontWeight = "normal"; 
-                                cells[k].style.backgroundColor = ""; 
-                            }
-                            cell.style.fontWeight = "bold"; 
-                            cell.style.backgroundColor = "grey";                         
-                            console.log("成功向后端发送字符串");
-                        };
-                    })(cell, selectedValue));
+                        cell.style.color = "black"; 
+                        cell.style.width = "135px";
+                    } 
+                    if(j == 1 )  {
+                        cell.textContent = "1";
+                        
+                        cell.style.color = "black";
+                        cell.style.textAlign = "center";
+                    }
+                    if(j == 2 )  {
+                        cell.textContent = "2"; 
+                        cell.style.color = "black";
+                        cell.style.textAlign = "center";
+                    }         
+                    if(j == 3 )  {
+                        cell.textContent = "3";                   
+                        cell.style.color = "black"; 
+                        cell.style.textAlign = "center";
+                    } 
+                    
+                  if (j != 0) {
+            (function(selectedValue,cellValue, columnIndex) {
+                cell.addEventListener('click', function(event) {
+                    var cells = table.getElementsByTagName('td');
+                    for (var k = 0; k < cells.length; k++) {
+                        cells[k].style.fontWeight = "normal"; // 取消上一个点击单元格的加粗效果
+                        cells[k].style.backgroundColor = ""; // 取消上一个点击单元格的背景颜色
+                    }
+                    this.style.fontWeight = "bold"; // 当前点击的单元格字体加粗
+                    this.style.backgroundColor = "grey"; // 当前点击的单元格背景颜色
+                  
+                    // 向后端发送字符串
+                    //sendStringToBackend(selectedValue + cellValue + columnIndex);
+        
+                    //console.log("成功发送字符串");
                 
+                        });
+                    })(data,data[i], j);
+                }
+        
+                        
             }
         }
-    } 
+            
+      }      
+      function data_arrange_tumor(selectedValue){
+          console.log("所选文件的数据集名称是" + selectedValue);
+          var table = document.getElementById("MyTable");
+          clearTable(selectedValue); // 清空表格
+          if (!data) {
+              console.error("data 尚未获取，请稍后再试");
+              return;
+          }
+          console.log("获取成功");       
+          var keys = Object.keys(data[0]);
+          console.log("keys is " + keys);
+          console.log("keys.length is " + keys.length);
+          console.log("keys[2] is " + keys[2]);
+          var headerRow = table.insertRow();
+          keys.forEach((key,index) => {
+              if(index < 2){
+                  var headerCell = headerRow.insertCell();
+                  headerCell.textContent = key;
+                  headerCell.style.color = "black";
+                  headerCell.style.width = "135px";
+              }        
+          });
+          // 插入数据行
+          for (var i = 0; i < data.length; i++) { 
+              var row = table.insertRow();
+            
+              var values = Object.values(data[i]);
+              console.log("键值的值是 " + values);
+              console.log("键值个数是 " + values.length);
+
+              for (var j = 0; j <2; j++) { 
+                  var cell = row.insertCell();   
+                  cell.style.color = "black";             
+                  cell.textContent = values[j];
+                  if (cell.textContent < 0) cell.textContent = "NULL";
+                  console.log("各个 cell.textContent信息是" + cell.textContent);
+                        
+                  cell.style.width = "135px";          
+                      cell.addEventListener('click', (function(cell, selectedValue) {
+                          return function(event) {
+                              var cells = table.getElementsByTagName('td');
+                              for (var k = 0; k < cells.length; k++) {
+                                  cells[k].style.fontWeight = "normal"; 
+                                  cells[k].style.backgroundColor = ""; 
+                              }
+                              cell.style.fontWeight = "bold"; 
+                              cell.style.backgroundColor = "grey";                         
+                              console.log("成功向后端发送字符串");
+                          };
+                      })(cell, selectedValue));
+                  
+              }
+          }
+      } 
         function sendStringToBackend(value) {
             // 创建 XMLHttpRequest 对象
             var xhr = new XMLHttpRequest();
@@ -649,20 +889,20 @@
                   }    
                 }
             };
-function handleBackendResponse(responseText) {
-    // 处理后端响应，根据需要执行相应操作
-    console.log("Received response from backend:", responseText);
-    // 在这里可以根据后端的响应来执行相应的操作，比如取消选择表格的样式操作
-    // 清除选择表格的样式操作
-    clearTableStyle();
-}
-function clearTableStyle() {
-    var cells = document.getElementsByTagName('td')
-    for (var i = 0; i < cells.length; i++) {
-        cells[i].style.fontWeight = "normal";
-        cells[i].style.backgroundColor = "";
-    }
-}
+      function handleBackendResponse(responseText) {
+          // 处理后端响应，根据需要执行相应操作
+          console.log("Received response from backend:", responseText);
+          // 在这里可以根据后端的响应来执行相应的操作，比如取消选择表格的样式操作
+          // 清除选择表格的样式操作
+          clearTableStyle();
+      }
+      function clearTableStyle() {
+          var cells = document.getElementsByTagName('td')
+          for (var i = 0; i < cells.length; i++) {
+              cells[i].style.fontWeight = "normal";
+              cells[i].style.backgroundColor = "";
+          }
+      }
     </script>
     <!--任务执行-->
     <script>
@@ -732,6 +972,27 @@ function clearTableStyle() {
           load_img();
 
         });
+      });
+      document.getElementById("executeCustom").addEventListener('click', function() {
+        const buttons = document.querySelectorAll('#Exeucutions button');
+            
+            // 遍历所有按钮，除了custom按钮，其他按钮设置为 display: none;
+        buttons.forEach(function(button) {
+            if (button.id !== 'executeCustom') {
+                button.style.display = 'none';
+            }
+        });
+        document.getElementById('button_section2').classList.remove("unclickable"); 
+
+        showAutoDismissAlert("Click the 'custom' button in the navigation bar to customize the parameters and model",2000);
+      });
+      document.getElementById('cancel_custom').addEventListener('click', function(){
+        const buttons = document.querySelectorAll('#Exeucutions button');
+        buttons.forEach(function(button){
+          button.style.display = 'block';
+        });
+        
+        document.getElementById('button_section2').classList.add("unclickable");
       });
     </script>
     <!--运行结果上传-->
@@ -947,5 +1208,138 @@ function clearTableStyle() {
               }, 100);
           }
       }
+    </script>
+    <!--自定义参数-->
+    <script>
+      const params = [];
+
+      function addParameter(paramName) {
+          document.getElementById(paramName).style.display = 'none';
+          params.push({
+              name: paramName,
+              value: null
+          });
+          renderParameters();
+      }
+
+      function removeParameter(index) {
+          const param = params[index];
+          const button = document.getElementById(param.name);
+          button.style.display = 'inline-block';
+          params.splice(index, 1);
+          renderParameters();
+      }
+
+      function renderParameters() {
+          const parametersDiv = document.getElementById('parameters_list');
+          parametersDiv.innerHTML = '';
+
+          params.forEach((param, index) => {
+              const div = document.createElement('div');
+              div.className = 'parameter';
+              div.innerHTML = `
+                  <span>${param.name}:</span>
+                  <input type="number" step="any" value="${param.value !== null ? param.value : ''}" onchange="params[${index}].value = parseFloat(this.value);">
+                  <button onclick="removeParameter(${index})">删除</button>
+              `;
+              parametersDiv.appendChild(div);
+          });
+      }
+      function generateJSON() {
+          const jsonParams = {};
+          params.forEach(param => {
+              jsonParams[param.name] = {
+                  "_type": "choice",
+                  "_value": [param.value]
+              };
+          });
+
+          const jsonData = JSON.stringify(jsonParams, null, 2);
+
+          // 下载 JSON 文件
+          const blob = new Blob([jsonData], {type: 'application/json'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'custom.json';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+      }
+    </script>
+    <!--自动消失的提示框函数-->
+    <script>
+      function showAutoDismissAlert(message, duration = 2000) {
+          const overlay = document.getElementById('overlay');
+          const messageBox = document.getElementById('messageBox');
+          const messageText = document.getElementById('messageText');
+  
+          // 设置提示框内容
+          messageText.textContent = message;
+          messageText.style.color = "black";
+  
+          // 显示遮罩和提示框
+          overlay.style.display = 'flex';
+          setTimeout(function() {
+              messageBox.style.opacity = 1; // 淡入提示框
+          }, 50); // 等待50毫秒以确保CSS动画生效
+  
+          // 一定时间后隐藏提示框
+          setTimeout(function() {
+              messageBox.style.opacity = 0; // 淡出提示框
+              setTimeout(function() {
+                  overlay.style.display = 'none'; // 隐藏遮罩
+              }, 300); // 等待动画结束
+          }, duration); // 指定的持续时间后隐藏
+      }
+    </script>
+    <!--自定义模型上传-->
+    <script>
+      const uploadForm = document.getElementById('uploadForm');
+      const fileInput = document.getElementById('fileInput');
+      const uploadStatus = document.getElementById('uploadStatus');
+      const progressBar = document.getElementById('progressBar');
+      const progressContainer = document.getElementById('progressContainer');
+
+      uploadForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const formData = new FormData();
+          formData.append('file', fileInput.files[0]);
+
+          const xhr = new XMLHttpRequest();
+
+          // Upload progress event
+          xhr.upload.addEventListener('progress', (event) => {
+              if (event.lengthComputable) {
+                  const percent = (event.loaded / event.total) * 100;
+                  progressBar.style.width = percent.toFixed(2) + '%';
+                  progressBar.textContent = percent.toFixed(2) + '%';
+              }
+          });
+
+          // Upload complete event
+          xhr.addEventListener('load', (event) => {
+              if (xhr.status === 200) {
+                  uploadStatus.textContent = 'File uploaded successfully!';
+              } else {
+                  uploadStatus.textContent = 'Error uploading file';
+              }
+              // Do not hide progress bar here
+          });
+
+          // Upload error event
+          xhr.addEventListener('error', () => {
+              console.error('Error uploading file');
+              uploadStatus.textContent = 'Error uploading file';
+              // Do not hide progress bar here
+          });
+
+          xhr.open('POST', '/upload', true);
+          xhr.send(formData);
+
+          progressContainer.style.display = 'block'; // Show progress bar
+      });
     </script>
 </html>
