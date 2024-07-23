@@ -59,7 +59,7 @@
             text-align: left;
             margin-left: 80px;
           }
-          #checkpoint1, #checkpoint2 , #checkpoint3{
+          #checkpoint1, #checkpoint2 , #checkpoint3 , #checkpoint4 , #checkpoint5{
             width: 100px;
             font-size: 12px;
             margin-left: 300px;
@@ -577,12 +577,20 @@
                             <p id="checkpoint1" style="color: grey;">等待运行</p>
                           </div>
                           <div class="guochen">
-                            <p id="checkpoint_text" style="color: grey;">第二步：对模型进行超参搜索</p>
+                            <p id="checkpoint_text" style="color: grey;">第二步：输出最佳模型</p>
                             <p id="checkpoint2" style="color: grey;">等待运行</p>
                           </div>
                           <div class="guochen">
-                            <p id="checkpoint_text" style="color: grey;">第三步：运行搜索出的最佳模型，获得结果</p>
+                            <p id="checkpoint_text" style="color: grey;">第三步：对最佳模型进行最佳超参搜索</p>
                             <p id="checkpoint3" style="color: grey;">等待运行</p>
+                          </div>
+                          <div class="guochen">
+                            <p id="checkpoint_text" style="color: grey;">第四步：训练最佳模型</p>
+                            <p id="checkpoint4" style="color: grey;">等待运行</p>
+                          </div>
+                          <div class="guochen">
+                            <p id="checkpoint_text" style="color: grey;">第五步：运行训练结束的最佳模型，获得结果</p>
+                            <p id="checkpoint5" style="color: grey;">等待运行</p>
                           </div>
                         </div>
                       </div>
@@ -995,10 +1003,6 @@
         .catch(error => {
           console.error('There was a problem with your fetch operation:', error);
           alert('已有实验在运行！');
-          // Call the log_message functions
-          log_message('textarea1', 'log');
-          log_message('textarea2', 'params');
-          // log_message('textarea3', 'result');
           // Call the log_img function
           load_img();
 
@@ -1029,10 +1033,6 @@
         .catch(error => {
           console.error('There was a problem with your fetch operation:', error);
           alert('没有实验在运行！');
-          // Call the log_message functions
-          log_message('textarea1', 'log');
-          log_message('textarea2', 'params');
-          log_message('textarea3', 'result');
           // Call the log_img function
           load_img();
 
