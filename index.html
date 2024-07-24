@@ -1008,36 +1008,72 @@
 
         });
       });
-      document.getElementById('cancel_work').addEventListener('click',function(){
-        const command = 'nnictl stop -a'; // 可以修改command执行不同的代码
+      document.getElementById('cancel_work').addEventListener('click', function () {
+        const command1 = 'python shutdown_flask.py'; // 第一个命令
+        const command2 = 'nnictl stop -a'; // 第二个命令
+
         document.getElementById('process').style.display = "none";
-        
         document.getElementById('default_text').style.display = "block";
+
+        // 发送第一个命令的 fetch 请求
         fetch('/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/3000/runcmd', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ command: command })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ command: command1 })
         })
         .then(response => {
-          if (!response.ok) {
-            throw new Error('网络似乎还没有准备好...');
-          }
-          return response.text();
+            if (!response.ok) {
+                throw new Error('网络似乎还没有准备好...');
+            }
+            return response.text();
         })
         .then(data => {
-          console.log(data);
-          alert('任务取消！');
+            console.log(data);
+            alert('nnictl 命令执行成功！');
+            
+            // 在第一个命令成功后，发送第二个命令的 fetch 请求
+            return fetch('/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/3000/runcmd', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ command: command2 })
+            });
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('网络似乎还没有准备好...');
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log(data);
+            alert('shutdown_flask.py 命令执行成功！');
         })
         .catch(error => {
-          console.error('There was a problem with your fetch operation:', error);
-          alert('没有实验在运行！');
-          // Call the log_img function
-          load_img();
-
+            console.error('There was a problem with your fetch operation:', error);
+            alert('命令执行失败！');
+            // Call the log_img function
+            load_img();
         });
+        // 获取所有具有 guochen 类的 div 元素
+        var guochenDivs = document.querySelectorAll('.guochen');
+
+        // 遍历每个 guochen 类的 div 元素
+        guochenDivs.forEach(function(div) {
+            // 获取当前 div 元素下所有 p 元素
+            var paragraphs = div.querySelectorAll('p');
+            
+            // 遍历每个 p 元素，并设置其样式为灰色
+            paragraphs.forEach(function(paragraph) {
+                paragraph.style.color = 'grey';
+            });
+        });
+
       });
+
       document.getElementById("executeCustom").addEventListener('click', function() {
         const buttons = document.querySelectorAll('#Exeucutions button');
             
@@ -1062,25 +1098,6 @@
     </script>
     <!--运行结果上传-->
     <script type="text/javascript">
-      function loadXMLDoc(id,name) {
-        var xmlhttp;
-          if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-          } else {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-          }
-            xmlhttp.onreadystatechange = function() {
-              if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                document.getElementById(id).innerHTML = xmlhttp.responseText;
-                // 在加载完成后等待5秒钟，然后再次执行 loadXMLDoc() 函数
-              }
-            }
-            // 修改为GET请求，将路径指定为name.log文件的路径
-            xmlhttp.open("GET", "test/"+name+".log", true);
-            xmlhttp.send();
-          }
       function loadIMGDoc() {
         var xmlhttp;
         if (window.XMLHttpRequest) {
@@ -1105,22 +1122,20 @@
             }
             }
         };
-        xmlhttp.open("GET", "image_urls.txt", true);
+        xmlhttp.open("GET", "/nb58bc0be2b9c644e1a1eccecf6f4b55dd18f3d70e500/proxy/3000/image_urls.txt", true);
         xmlhttp.send();
       }
 
-             
-      function log_message(id, name) {
-        setInterval(function() {
-          loadXMLDoc(id, name);
-      }, 3000);
-}
       function load_img() {
         setInterval(loadIMGDoc, 3000);
       }
 
+      load_img()
+
 
     </script>
+
+    
     <!--模型列表上传-->
     <script>
       // 使用AJAX获取文件列表并动态创建链接
